@@ -13,7 +13,7 @@ from database import (
 app = FastAPI()
 
 # create middleware to allow react to contact the backend
-origins = ['https://localhost:3000']
+origins = ['http://localhost:3000']
 app.add_middleware(
     CORSMiddleware,
     allow_origins = origins,
@@ -38,7 +38,7 @@ async def get_todo_by_id(title):
         return response
     raise HTTPException(404, f"There is no todo item with this title {title}")
 
-@app.post("/api/todo/", response_model = Todo)
+@app.post("/api/todo", response_model = Todo)
 async def post_todo(todo:Todo):
     response = await create_todo(todo.dict())
     if response:
@@ -52,7 +52,7 @@ async def put_todo(title:str, desc:str):
         return response
     raise HTTPException(404, f"There was no todo item with this title {title}")
 
-@app.delete("/api/todo{title}")
+@app.delete("/api/todo/{title}")
 async def delete_todo(title):
     response = await remove_todo(title)
     if response:
